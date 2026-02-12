@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{% block title %}My Orders - Django Marketplace{% endblock %}
+
+{% block content %}
+<h1>My Orders</h1>
+
+{% if page_obj and page_obj.object_list %}
+  <div class="card">
+    <ul>
+      {% for order in page_obj.object_list %}
+        <li>
+          <a href="{% url 'main:order_detail' order.order_id %}">Order {{ order.order_id }}</a>
+          — {{ order.status }} — ${{ order.total_amount|floatformat:2 }}
+        </li>
+      {% endfor %}
+    </ul>
+    <div style="margin-top:12px;">
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Previous</a>{% endif %}
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next</a>{% endif %}
+    </div>
+  </div>
+{% else %}
+  <div class="card">You have no orders yet.</div>
+{% endif %}
+
+{% endblock %}

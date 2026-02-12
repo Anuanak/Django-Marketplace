@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+
+{% block title %}Checkout - Django Marketplace{% endblock %}
+
+{% block content %}
+<h1>Checkout</h1>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+    <div>
+        <div class="card">
+            <h3>Shipping Address</h3>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px;">Complete Order</button>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <div class="card">
+            <h3>Order Summary</h3>
+            <hr>
+            {% for seller, items in orders_by_seller.items %}
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">
+                    <h4>{{ seller.store_name }}</h4>
+                    {% for item in items %}
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px;">
+                            <span>{{ item.name }} x {{ item.quantity }}</span>
+                            <span>${{ item.get_total|floatformat:2 }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <hr>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Subtotal:</strong>
+                <strong>${{ subtotal|floatformat:2 }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Shipping:</strong>
+                <strong>${{ shipping_cost|floatformat:2 }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>Tax (10%):</strong>
+                <strong>${{ tax|floatformat:2 }}</strong>
+            </div>
+            <hr>
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #27ae60;">
+                <strong>Total:</strong>
+                <strong>${{ total|floatformat:2 }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

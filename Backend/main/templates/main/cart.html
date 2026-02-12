@@ -1,0 +1,75 @@
+{% extends "main/base.html" %}
+
+{% block title %}Shopping Cart - Django Marketplace{% endblock %}
+
+{% block content %}
+<h1>Shopping Cart</h1>
+
+{% if cart.cartitem_set.all %}
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        <div>
+            {% for item in cart.cartitem_set.all %}
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="flex: 1;">
+                        <h3>{{ item.product.name }}</h3>
+                        <p style="color: #666; margin-bottom: 10px;">{{ item.product.seller.store_name }}</p>
+                        <p style="font-size: 18px; font-weight: bold; color: #27ae60;">${{ item.product.current_price|floatformat:2 }}</p>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <form method="post" action="{% url 'main:update_cart_item' item.id %}" style="display: flex; gap: 5px;">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" min="1" value="{{ item.quantity }}" style="width: 80px;">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </form>
+                        <a href="{% url 'main:remove_from_cart' item.id %}" class="btn btn-danger">Remove</a>
+                    </div>
+                    
+                    <div style="text-align: right; margin-left: 20px;">
+                        <p style="font-size: 16px; font-weight: bold;">${{ item.get_total|floatformat:2 }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            <div class="card">
+                <h3>Order Summary</h3>
+                <hr>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Subtotal:</span>
+                    <span>${{ subtotal|floatformat:2 }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Shipping:</span>
+                    <span>$10.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Tax (10%):</span>
+                    <span>${{ tax|floatformat:2 }}</span>
+                </div>
+                <hr>
+                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+                    <span>Total:</span>
+                    <span style="color: #27ae60;">${{ grand_total|floatformat:2 }}</span>
+                </div>
+                <a href="{% url 'main:checkout' %}" class="btn btn-success" style="width: 100%; text-align: center; padding: 15px;">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="card" style="text-align: center; padding: 50px;">
+        <h2>Your cart is empty</h2>
+        <p style="margin: 20px 0; color: #666;">Add some products to get started!</p>
+        <a href="{% url 'main:product_list' %}" class="btn btn-primary">Continue Shopping</a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<filter_syntax>
+    These template filters need to be defined in your Python code:
+    - multiply: multiplies a value
+    - add: adds to a value
+</filter_syntax>
+{% endblock %}
