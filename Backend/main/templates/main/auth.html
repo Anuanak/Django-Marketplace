@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 30px;">
+            {% if is_login %}Login{% else %}Register{% endif %}
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: #e74c3c; font-size: 12px; margin-top: 5px;">
+                            {{ field.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;">
+                {% if is_login %}Login{% else %}Register{% endif %}
+            </button>
+        </form>
+
+        <hr style="margin: 20px 0;">
+
+        {% if is_login %}
+            <p style="text-align: center;">Don't have an account? <a href="{% url 'main:register' %}" style="color: #3498db;">Register here</a></p>
+        {% else %}
+            <p style="text-align: center;">Already have an account? <a href="{% url 'main:login' %}" style="color: #3498db;">Login here</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
