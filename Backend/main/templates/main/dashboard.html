@@ -12,7 +12,7 @@
     </div>
     <div class="card" style="text-align: center;">
         <h3 style="color: #27ae60;">Total Spent</h3>
-        <p style="font-size: 36px; font-weight: bold; color: #229954;">${{"%.2f"|format:buyer_stats.total_spent|default:"0"}}</p>
+        <p style="font-size: 36px; font-weight: bold; color: #229954;">${{ buyer_stats.total_spent|default:0|floatformat:2 }}</p>
     </div>
     <div class="card" style="text-align: center;">
         <h3 style="color: #e74c3c;">Wishlist Items</h3>
@@ -29,11 +29,11 @@
         </div>
         <div class="card" style="text-align: center;">
             <h3 style="color: #f39c12;">Total Sales</h3>
-            <p style="font-size: 36px; font-weight: bold;">${{"%.2f"|format:seller_stats.total_sales|default:"0"}}</p>
+            <p style="font-size: 36px; font-weight: bold;">${{ seller_stats.total_sales|default:0|floatformat:2 }}</p>
         </div>
         <div class="card" style="text-align: center;">
             <h3 style="color: #3498db;">Account Balance</h3>
-            <p style="font-size: 36px; font-weight: bold;">${{"%.2f"|format:seller_stats.balance|default:"0"}}</p>
+            <p style="font-size: 36px; font-weight: bold;">${{ seller_stats.balance|default:0|floatformat:2 }}</p>
         </div>
         <div class="card" style="text-align: center;">
             <h3 style="color: #e74c3c;">Average Rating</h3>

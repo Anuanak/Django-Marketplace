@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/Home';
 import ProductsPage from './pages/Products';
+import ProductDetailPage from './pages/ProductDetail';
 import LoginPage from './pages/Login';
 import CartPage from './pages/Cart';
 import './App.css';
@@ -34,6 +35,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route
               path="/login"
               element={<LoginPage onLoginSuccess={handleLoginSuccess} />}

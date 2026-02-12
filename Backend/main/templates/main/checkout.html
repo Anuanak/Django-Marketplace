@@ -32,7 +32,7 @@
                     {% for item in items %}
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px;">
                             <span>{{ item.name }} x {{ item.quantity }}</span>
-                            <span>${{"%.2f"|format:item.get_total}}</span>
+                            <span>${{ item.get_total|floatformat:2 }}</span>
                         </div>
                     {% endfor %}
                 </div>
@@ -40,20 +40,20 @@
             <hr>
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <strong>Subtotal:</strong>
-                <strong>${{"%.2f"|format:subtotal}}</strong>
+                <strong>${{ subtotal|floatformat:2 }}</strong>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <strong>Shipping:</strong>
-                <strong>${{"%.2f"|format:shipping_cost}}</strong>
+                <strong>${{ shipping_cost|floatformat:2 }}</strong>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <strong>Tax (10%):</strong>
-                <strong>${{"%.2f"|format:tax}}</strong>
+                <strong>${{ tax|floatformat:2 }}</strong>
             </div>
             <hr>
             <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #27ae60;">
                 <strong>Total:</strong>
-                <strong>${{"%.2f"|format:total}}</strong>
+                <strong>${{ total|floatformat:2 }}</strong>
             </div>
         </div>
     </div>

@@ -3,9 +3,16 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.pagination import PageNumberPagination
-from django_filters.rest_framework import DjangoFilterBackend
+try:
+    from django_filters.rest_framework import DjangoFilterBackend
+except Exception:
+    DjangoFilterBackend = None
 from django.db.models import Q, Avg
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
 from .models import (
     Product, Category, SellerProfile, Cart, CartItem, Order, OrderItem,
     Review, Payment, Wishlist
@@ -67,7 +74,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductListSerializer
     lookup_field = 'slug'
     pagination_class = StandardPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    if DjangoFilterBackend:
+        filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    else:
+        filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = {'category': ['exact'], 'price': ['lt', 'gt']}
     search_fields = ['name', 'description', 'category__name']
     ordering_fields = ['price', 'name', 'created_at', 'average_rating', 'view_count']
@@ -189,7 +199,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     """
     serializer_class = OrderListSerializer
     pagination_class = StandardPagination
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    if DjangoFilterBackend:
+        filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    else:
+        filter_backends = [filters.OrderingFilter]
     filterset_fields = ['status', 'payment_status', 'created_at']
     ordering_fields = ['created_at', 'total_amount']
     ordering = ['-created_at']
@@ -285,7 +298,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
     serializer_class = ReviewSerializer
     pagination_class = StandardPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    if DjangoFilterBackend:
+        filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    else:
+        filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = {'product': ['exact'], 'rating': ['exact']}
     search_fields = ['title', 'comment', 'buyer__username']
     ordering_fields = ['created_at', 'rating', 'helpful_count']
@@ -354,6 +370,26 @@ class WishlistViewSet(viewsets.ViewSet):
         wishlist, _ = Wishlist.objects.get_or_create(user=request.user)
         serializer = WishlistSerializer(wishlist)
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_user(request):
+    """Simple user registration endpoint that returns an auth token."""
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    if not username or not password:
+        return Response({'error': 'username and password required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=username, email=email, password=password)
+    token, _ = Token.objects.get_or_create(user=user)
+
+    return Response({'token': token.key, 'username': user.username, 'id': user.id}, status=status.HTTP_201_CREATED)
     
     @action(detail=False, methods=['post'])
     def add(self, request):

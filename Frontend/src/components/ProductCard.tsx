@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { API } from '../services/api';
 import './ProductCard.css';
 
@@ -47,9 +48,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       >
         Add to Cart
       </button>
-      <a href={`/products/${product.id}`} className="btn btn-secondary">
+      <Link to={`/products/${product.id}`} className="btn btn-secondary">
         View Details
-      </a>
+      </Link>
     </div>
   );
 };

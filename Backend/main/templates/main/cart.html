@@ -13,7 +13,7 @@
                     <div style="flex: 1;">
                         <h3>{{ item.product.name }}</h3>
                         <p style="color: #666; margin-bottom: 10px;">{{ item.product.seller.store_name }}</p>
-                        <p style="font-size: 18px; font-weight: bold; color: #27ae60;">${{"%.2f"|format:item.product.current_price}}</p>
+                        <p style="font-size: 18px; font-weight: bold; color: #27ae60;">${{ item.product.current_price|floatformat:2 }}</p>
                     </div>
                     
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -26,7 +26,7 @@
                     </div>
                     
                     <div style="text-align: right; margin-left: 20px;">
-                        <p style="font-size: 16px; font-weight: bold;">${{"%.2f"|format:item.get_total}}</p>
+                        <p style="font-size: 16px; font-weight: bold;">${{ item.get_total|floatformat:2 }}</p>
                     </div>
                 </div>
             {% endfor %}
@@ -38,7 +38,7 @@
                 <hr>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span>Subtotal:</span>
-                    <span>${{"%.2f"|format:cart.total_price}}</span>
+                    <span>${{ subtotal|floatformat:2 }}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span>Shipping:</span>
@@ -46,12 +46,12 @@
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span>Tax (10%):</span>
-                    <span>${{"%.2f"|format:cart.total_price|multiply:0.1}}</span>
+                    <span>${{ tax|floatformat:2 }}</span>
                 </div>
                 <hr>
                 <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
                     <span>Total:</span>
-                    <span style="color: #27ae60;">${{"%.2f"|format:cart.total_price|multiply:1.1|add:10}}</span>
+                    <span style="color: #27ae60;">${{ grand_total|floatformat:2 }}</span>
                 </div>
                 <a href="{% url 'main:checkout' %}" class="btn btn-success" style="width: 100%; text-align: center; padding: 15px;">Proceed to Checkout</a>
             </div>

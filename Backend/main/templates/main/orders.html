@@ -16,7 +16,7 @@
                     </div>
                     <div style="text-align: right;">
                         <span class="badge badge-primary">{{ order.get_status_display }}</span>
-                        <p style="margin-top: 10px; font-size: 18px; font-weight: bold; color: #27ae60;">${{"%.2f"|format:order.total_amount}}</p>
+                        <p style="margin-top: 10px; font-size: 18px; font-weight: bold; color: #27ae60;">${{ order.total_amount|floatformat:2 }}</p>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                     {% for item in order.orderitem_set.all %}
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span>{{ item.product_name }} x {{ item.quantity }}</span>
-                            <span>${{"%.2f"|format:item.price}}</span>
+                            <span>${{ item.price|floatformat:2 }}</span>
                         </div>
                     {% endfor %}
                 </div>

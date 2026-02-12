@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.http import require_POST, require_GET
-from django.db.models import Q, Avg, Count
+from django.db.models import Q, Avg, Count, F
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib import messages
@@ -18,13 +18,16 @@ from .models import (
 
 def home(request):
     """Display home page with featured products"""
-    featured_products = Product.objects.filter(
-        status='active',
-        is_on_sale=True
-    ).order_by('-created_at')[:8]
+    # Prefer products on sale; fall back to most recent active products
+    featured_products = Product.objects.filter(status='active', discount_price__isnull=False).order_by('-created_at')[:8]
+    if not featured_products:
+        featured_products = Product.objects.filter(status='active').order_by('-created_at')[:8]
+    # Popular products by view count
+    popular_products = Product.objects.filter(status='active').order_by('-view_count')[:8]
     
     context = {
         'featured_products': featured_products,
+        'popular_products': popular_products,
     }
     return render(request, 'main/index.html', context)
 
@@ -85,8 +88,8 @@ def product_list(request):
     """Display all products with filtering and search"""
     products = Product.objects.filter(status='active').select_related('seller', 'category')
     
-    # Search
-    query = request.GET.get('q')
+    # Search (template uses `search` param)
+    query = request.GET.get('search')
     if query:
         products = products.filter(
             Q(name__icontains=query) |
@@ -94,10 +97,10 @@ def product_list(request):
             Q(category__name__icontains=query)
         )
     
-    # Category filter
+    # Category filter (template sends category id)
     category = request.GET.get('category')
     if category:
-        products = products.filter(category__slug=category)
+        products = products.filter(category__id=category)
     
     # Price filter
     min_price = request.GET.get('min_price')
@@ -117,11 +120,11 @@ def product_list(request):
     paginator = Paginator(products, 12)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-    
+
     categories = Category.objects.all()
-    
+
     context = {
-        'page_obj': page_obj,
+        'products': page_obj,  # template expects `products`
         'categories': categories,
         'query': query,
         'selected_category': category,
@@ -150,7 +153,13 @@ def product_detail(request, slug):
     }
     
     if request.user.is_authenticated:
-        context['is_in_wishlist'] = request.user.wishlist.products.filter(id=product.id).exists()
+        # User may not have a wishlist yet; guard against RelatedObjectDoesNotExist
+        try:
+            context['is_in_wishlist'] = request.user.wishlist.products.filter(id=product.id).exists()
+        except Exception:
+            # Ensure a wishlist exists for the user to avoid runtime errors
+            Wishlist.objects.get_or_create(user=request.user)
+            context['is_in_wishlist'] = False
     
     return render(request, 'main/product_detail.html', context)
 
@@ -184,10 +193,19 @@ def view_cart(request):
     """Display shopping cart"""
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = cart.items.select_related('product')
-    
+    # Compute monetary summary values for the template
+    subtotal = cart.total_price
+    shipping_cost = 10.00
+    tax = subtotal * 0.1
+    grand_total = subtotal + shipping_cost + tax
+
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        'subtotal': subtotal,
+        'shipping_cost': shipping_cost,
+        'tax': tax,
+        'grand_total': grand_total,
     }
     return render(request, 'main/cart.html', context)
 
@@ -257,10 +275,19 @@ def checkout(request):
     if not cart_items.exists():
         messages.error(request, 'Your cart is empty.')
         return redirect('main:view_cart')
-    
+    # Compute summary values for display
+    subtotal = cart.total_price
+    shipping_cost = 10.00
+    tax = subtotal * 0.1
+    total = subtotal + shipping_cost + tax
+
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        'subtotal': subtotal,
+        'shipping_cost': shipping_cost,
+        'tax': tax,
+        'total': total,
     }
     return render(request, 'main/checkout.html', context)
 

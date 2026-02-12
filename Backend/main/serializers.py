@@ -44,7 +44,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductListSerializer(serializers.ModelSerializer):
     seller = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
-    images = ProductImageSerializer(source='images', many=True, read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     
     class Meta:
         model = Product
@@ -59,7 +59,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(serializers.ModelSerializer):
     seller = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
-    images = ProductImageSerializer(source='images', many=True, read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     
     class Meta:
         model = Product
