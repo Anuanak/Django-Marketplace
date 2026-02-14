@@ -1,0 +1,35 @@
+# Core Django
+Django==4.2.10
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+
+# Database
+psycopg2-binary==2.9.9
+
+# CORS & Security
+django-cors-headers==4.3.1
+python-decouple==3.8
+
+# File Handling
+Pillow==10.2.0
+
+# Filtering & Search
+django-filter==23.5
+
+# Multi-language Support
+django-modeltranslation==0.18.12
+
+# API Documentation
+drf-spectacular==0.27.1
+
+# Task Queue
+celery==5.3.6
+redis==5.0.1
+django-redis==5.4.0
+
+# Elasticsearch
+django-elasticsearch-dsl==8.0
+elasticsearch-dsl==8.11.0
+
+# Utilities
+python-slugify==8.0.3
