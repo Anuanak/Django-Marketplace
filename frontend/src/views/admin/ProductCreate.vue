@@ -141,7 +141,7 @@ const generateSKU = () => {
 const fetchCategories = async () => {
   categoriesLoading.value = true
   try {
-    const response = await api.get('/api/products/categories/')
+    const response = await api.get('/products/categories/')
     categories.value = response.data.results || response.data
   } catch (error) {
     ElMessage.error('Failed to load categories')
@@ -153,7 +153,7 @@ const fetchCategories = async () => {
 
 const fetchProduct = async (id) => {
   try {
-    const response = await api.get(`/api/products/products/${id}/`)
+    const response = await api.get(`/products/products/${id}/`)
     const product = response.data
     form.value = {
       name: product.name,
@@ -181,11 +181,11 @@ const submitForm = async () => {
   try {
     if (isEdit.value) {
       // Update existing product
-      await api.patch(`/api/products/products/${route.params.id}/`, form.value)
+      await api.patch(`/products/products/${route.params.id}/`, form.value)
       ElMessage.success('Product updated successfully')
     } else {
       // Create new product
-      await api.post('/api/products/products/', form.value)
+      await api.post('/products/products/', form.value)
       ElMessage.success('Product created successfully')
     }
     await router.push('/admin/products')

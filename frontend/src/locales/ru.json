@@ -20,7 +20,11 @@
     "loading": "Загрузка...",
     "error": "Ошибка",
     "success": "Успешно",
-    "confirm": "Подтвердить"
+    "confirm": "Подтвердить",
+    "create": "Создать",
+    "generate": "Сгенерировать",
+    "update": "Обновить",
+    "actions": "Действия"
   },
   "nav": {
     "home": "Главная",
@@ -44,7 +48,19 @@
     "rating": "Рейтинг",
     "seller": "Продавец",
     "physical": "Физический товар",
-    "digital": "Цифровой товар"
+    "digital": "Цифровой товар",
+    "details": "Информация о товаре",
+    "sku": "Артикул",
+    "type": "Тип товара",
+    "quantity": "Количество",
+    "available": "Доступно",
+    "visitStore": "Посетить магазин",
+    "features": "Особенности",
+    "noReviews": "Нет отзывов",
+    "specsComingSoon": "Характеристики скоро появятся",
+    "relatedProducts": "Похожие товары",
+    "viewDetails": "Посмотреть подробнее",
+    "save": "Сэкономьте"
   },
   "cart": {
     "title": "Корзина",
@@ -154,6 +170,7 @@
     "reviews": "Отзывы",
     "digitalKeys": "Цифровые ключи",
     "payments": "Платежи",
+    "settings": "Настройки",
     "totalUsers": "Всего пользователей",
     "totalProducts": "Всего товаров",
     "totalOrders": "Всего заказов",
@@ -170,6 +187,18 @@
     "createProduct": "Создать товар",
     "editProduct": "Редактировать товар",
     "createCategory": "Создать категорию",
-    "editCategory": "Редактировать категорию"
+    "editCategory": "Редактировать категорию",
+    "generalSettings": "Общие настройки",
+    "marketplace": "Маркетплейс",
+    "commission": "Комиссия",
+    "commissionSettings": "Настройки комиссии",
+    "emailSettings": "Настройки электронной почты",
+    "smtpConfiguration": "Конфигурация SMTP",
+    "paymentSettings": "Настройки платежей",
+    "paymentMethods": "Способы оплаты",
+    "notificationSettings": "Настройки уведомлений",
+    "notifications": "Уведомления",
+    "testEmail": "Тест уведомления",
+    "active": "Активно"
   }
 }

@@ -77,10 +77,10 @@
         <div v-loading="loading" class="products-grid">
           <el-empty v-if="!loading && !products.length" :description="$t('products.noProducts')" />
           
-          <el-card v-for="product in products" :key="product.id" shadow="hover" class="product-card" @click="goToProduct(product.id)">
+          <el-card v-for="product in products" :key="product.id" shadow="hover" class="product-card" @click="goToProduct(product)">
             <div class="product-image">
               <el-image :src="product.image || '/placeholder.jpg'" fit="cover" />
-              <el-tag v-if="product.is_digital" class="product-type-tag" type="info">
+              <el-tag v-if="product.product_type === 'digital'" class="product-type-tag" type="info">
                 {{ $t('product.digital') }}
               </el-tag>
             </div>
@@ -191,7 +191,7 @@ const fetchProducts = async () => {
       params.is_digital = filters.productType === 'digital'
     }
     
-    const response = await api.get('/products/', { params })
+    const response = await api.get('/products/products/', { params })
     products.value = response.data.results || []
     pagination.total = response.data.count || 0
   } catch (error) {
@@ -224,8 +224,8 @@ const addToCart = async (product) => {
   }
 }
 
-const goToProduct = (productId) => {
-  router.push(`/products/${productId}`)
+const goToProduct = (product) => {
+  router.push({ name: 'product-detail', params: { slug: product.slug } })
 }
 
 onMounted(() => {

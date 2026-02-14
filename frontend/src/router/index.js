@@ -174,6 +174,11 @@ const router = createRouter({
           path: 'payments',
           name: 'admin-payments',
           component: () => import('@/views/admin/Payments.vue')
+        },
+        {
+          path: 'settings',
+          name: 'admin-settings',
+          component: () => import('@/views/admin/Settings.vue')
         }
       ]
     },

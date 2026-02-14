@@ -107,7 +107,7 @@ class CartItem(models.Model):
     def unit_price(self):
         """Get unit price (variant price if variant selected)."""
         if self.variant:
-            return self.variant.final_price
+            return self.product.price + self.variant.price_adjustment
         return self.product.price
     
     @property

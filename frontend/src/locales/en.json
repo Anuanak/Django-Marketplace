@@ -20,7 +20,11 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "create": "Create",
+    "generate": "Generate",
+    "update": "Update",
+    "actions": "Actions"
   },
   "nav": {
     "home": "Home",
@@ -44,7 +48,20 @@
     "rating": "Rating",
     "seller": "Seller",
     "physical": "Physical Product",
-    "digital": "Digital Product"
+    "digital": "Digital Product",
+    "details": "Product Details",
+    "sku": "SKU",
+    "type": "Product Type",
+    "quantity": "Quantity",
+    "available": "Available",
+    "visitStore": "Visit Store",
+    "features": "Features",
+    "noReviews": "No reviews yet",
+    "specsComingSoon": "Specifications coming soon",
+    "relatedProducts": "Related Products",
+    "viewDetails": "View Details",
+    "save": "Save",
+    "specifications": "Specifications"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -154,6 +171,7 @@
     "reviews": "Reviews",
     "digitalKeys": "Digital Keys",
     "payments": "Payments",
+    "settings": "Settings",
     "totalUsers": "Total Users",
     "totalProducts": "Total Products",
     "totalOrders": "Total Orders",
@@ -170,6 +188,18 @@
     "createProduct": "Create Product",
     "editProduct": "Edit Product",
     "createCategory": "Create Category",
-    "editCategory": "Edit Category"
+    "editCategory": "Edit Category",
+    "generalSettings": "General Settings",
+    "marketplace": "Marketplace",
+    "commission": "Commission",
+    "commissionSettings": "Commission Settings",
+    "emailSettings": "Email Settings",
+    "smtpConfiguration": "SMTP Configuration",
+    "paymentSettings": "Payment Settings",
+    "paymentMethods": "Payment Methods",
+    "notificationSettings": "Notification Settings",
+    "notifications": "Notifications",
+    "testEmail": "Test Email",
+    "active": "Active"
   }
 }

@@ -36,37 +36,41 @@ export const useCartStore = defineStore('cart', () => {
   async function addItem(productId, quantity = 1, variantId = null) {
     try {
       const response = await cartService.addToCart(productId, quantity, variantId)
-      items.value = response.data.items
+      items.value = response.data.items || []
       ElMessage.success('Added to cart')
       return { success: true }
     } catch (error) {
-      ElMessage.error(error.response?.data?.detail || 'Failed to add to cart')
-      return { success: false }
+      const errorMsg = error.response?.data?.detail || error.message || 'Failed to add to cart'
+      ElMessage.error(errorMsg)
+      console.error('Add to cart error:', error.response?.data || error)
+      return { success: false, error: errorMsg }
     }
   }
   
   async function updateItem(itemId, quantity) {
     try {
-      await cartService.updateCartItem(itemId, quantity)
-      const item = items.value.find(i => i.id === itemId)
-      if (item) {
-        item.quantity = quantity
-      }
+      const response = await cartService.updateCartItem(itemId, quantity)
+      items.value = response.data.items || []
+      ElMessage.success('Cart updated')
       return { success: true }
     } catch (error) {
-      ElMessage.error('Failed to update cart item')
+      const errorMsg = error.response?.data?.detail || 'Failed to update cart item'
+      ElMessage.error(errorMsg)
+      console.error('Update cart item error:', error.response?.data || error)
       return { success: false }
     }
   }
   
   async function removeItem(itemId) {
     try {
-      await cartService.removeFromCart(itemId)
-      items.value = items.value.filter(item => item.id !== itemId)
+      const response = await cartService.removeFromCart(itemId)
+      items.value = response.data.items || []
       ElMessage.success('Removed from cart')
       return { success: true }
     } catch (error) {
-      ElMessage.error('Failed to remove item')
+      const errorMsg = error.response?.data?.detail || 'Failed to remove item'
+      ElMessage.error(errorMsg)
+      console.error('Remove item error:', error.response?.data || error)
       return { success: false }
     }
   }
@@ -78,7 +82,9 @@ export const useCartStore = defineStore('cart', () => {
       ElMessage.success('Cart cleared')
       return { success: true }
     } catch (error) {
-      ElMessage.error('Failed to clear cart')
+      const errorMsg = error.response?.data?.detail || 'Failed to clear cart'
+      ElMessage.error(errorMsg)
+      console.error('Clear cart error:', error.response?.data || error)
       return { success: false }
     }
   }

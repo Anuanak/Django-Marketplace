@@ -44,6 +44,10 @@
               <el-icon><Money /></el-icon>
               <span>{{ $t('admin.payments') }}</span>
             </el-menu-item>
+            <el-menu-item index="/admin/settings">
+              <el-icon><Setting /></el-icon>
+              <span>{{ $t('admin.settings') }}</span>
+            </el-menu-item>
             <el-divider style="background-color: rgba(255,255,255,0.2)" />
             <el-menu-item index="/">
               <el-icon><House /></el-icon>

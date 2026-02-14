@@ -87,7 +87,7 @@ const formatCurrency = (amount) => {
 const fetchProducts = async () => {
   loading.value = true
   try {
-    const response = await api.get('/api/products/products/', {
+    const response = await api.get('/products/products/', {
       params: {
         page: pagination.value.page,
         page_size: pagination.value.page_size
@@ -116,7 +116,7 @@ const editProduct = (id) => {
 
 const deleteProduct = async (id) => {
   try {
-    await api.delete(`/api/products/products/${id}/`)
+    await api.delete(`/products/products/${id}/`)
     ElMessage.success('Product deleted successfully')
     await fetchProducts()
   } catch (error) {
@@ -127,7 +127,7 @@ const deleteProduct = async (id) => {
 
 const toggleActive = async (row) => {
   try {
-    await api.patch(`/api/products/products/${row.id}/`, {
+    await api.patch(`/products/products/${row.id}/`, {
       is_active: row.is_active
     })
     ElMessage.success('Product updated')

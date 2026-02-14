@@ -3,27 +3,27 @@ import api from './api'
 export default {
   // Get products with filters
   getProducts(params) {
-    return api.get('/products/', { params })
+    return api.get('/products/products/', { params })
   },
   
   // Get single product by slug
   getProduct(slug) {
-    return api.get(`/products/${slug}/`)
+    return api.get(`/products/products/${slug}/`)
   },
   
   // Create product (seller only)
   createProduct(data) {
-    return api.post('/products/', data)
+    return api.post('/products/products/', data)
   },
   
   // Update product (seller only)
   updateProduct(slug, data) {
-    return api.put(`/products/${slug}/`, data)
+    return api.put(`/products/products/${slug}/`, data)
   },
   
   // Delete product (seller only)
   deleteProduct(slug) {
-    return api.delete(`/products/${slug}/`)
+    return api.delete(`/products/products/${slug}/`)
   },
   
   // Upload product images
@@ -32,7 +32,7 @@ export default {
     files.forEach((file, index) => {
       formData.append(`image_${index}`, file)
     })
-    return api.post(`/products/${productId}/upload-images/`, formData, {
+    return api.post(`/products/products/${productId}/upload-images/`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
   },
