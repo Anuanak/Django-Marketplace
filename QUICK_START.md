@@ -1,334 +1,128 @@
-# 🚀 Quick Start Guide - Django Marketplace
+# 🚀 Quick Start - Testing Balance Update
 
-## 30-Second Setup
+## In 30 Seconds
 
-```bash
-# 1. Navigate to project
-cd c:\Users\Montenegro\Desktop\proj\Django-Marketplace
+1. **Both servers are running:**
+   - Backend: http://localhost:8000 ✅
+   - Frontend: http://localhost:5176 ✅
 
-# 2. Activate virtual environment
-venv\Scripts\activate
+2. **Login as Admin:**
+   - Email: `admin@example.com`
+   - Password: `admin123`
 
-# 3. Run migrations (already done, but just in case)
-cd Backend
-python manage.py migrate
+3. **Go to Admin Panel:**
+   - Click your avatar (top right)
+   - Select "Admin Panel" (purple option)
 
-# 4. Start server
-python manage.py runserver
-```
-
-**Done!** Your marketplace is now running at `http://127.0.0.1:8000`
-
----
-
-## Access Points
-
-| URL | Purpose | Credentials |
-|-----|---------|-------------|
-| `http://127.0.0.1:8000/admin/` | Django Admin Panel | admin / admin123 |
-| `http://127.0.0.1:8000/products/` | Product Listing (Variant 1) | N/A |
-| `http://127.0.0.1:8000/api/v1/` | REST API Root (Variant 2) | Token auth |
-| `http://127.0.0.1:8000/api/v1/products/` | API - List Products | N/A |
-| `http://127.0.0.1:8000/api/v1/categories/` | API - Categories | N/A |
-| `http://127.0.0.1:8000/api/v1/cart/` | API - Shopping Cart | Auth required |
-| `http://127.0.0.1:8000/api/v1/orders/` | API - Orders | Auth required |
+4. **Test Balance Update:**
+   - Click "Users" in sidebar
+   - Click "Edit" on any user
+   - Change the **Balance** field
+   - Click "Save"
+   - ✅ Success! Balance updated in database
 
 ---
 
-## What's Implemented
+## What Was Fixed?
 
-### ✅ Core Models (Database)
-- **Users & Sellers** - Multi-seller support
-- **Products** - With images, categories, pricing
-- **Shopping Cart** - Add/remove/update items
-- **Orders** - Order management with status tracking
-- **Reviews** - 5-star rating system
-- **Payments** - Payment record tracking
-- **Wishlist** - Save favorite products
-- **Notifications** - User notifications
+### ❌ Before
+- Balance field was READ-ONLY  
+- Admin panel had mock data only
+- No API integration
+- Couldn't save balance changes
 
-### ✅ Admin Interface
-- Beautiful admin panel with color-coded statuses
-- Manage products, categories, sellers, orders
-- Track seller balances and commission
-- Approve/edit reviews with seller responses
-- Monitor payments and refunds
-
-### ✅ Variant 1: Traditional Django Views
-Complete traditional views for:
-- Product listing with search/filter
-- Product details with reviews
-- Seller profiles
-- Shopping cart management
-- Checkout and order processing
-- Review submission
-- Wishlist management
-- User dashboard
-
-URL patterns: `/products/`, `/cart/`, `/orders/`, etc.
-
-### ✅ Variant 2: REST API (Django REST Framework)
-Full RESTful API endpoints:
-- Product management
-- Category browsing
-- Shopping cart operations
-- Order creation and tracking
-- Review management
-- Seller profiles
-- Wishlist operations
-
-API root: `/api/v1/`
+### ✅ After
+- Admin can update balance
+- All CRUD operations work
+- Real API calls to Django backend
+- Balance persists in database
+- Security: Only admins can access
 
 ---
 
-## Database Schema
+## Test Scenarios
 
-### Key Tables
-```
-Users
-├── SellerProfile (store info, balance, rating)
-├── Products (linked to seller)
-│   └── ProductImages (multiple per product)
-├── Reviews (product ratings)
-├── Orders (grouped by seller)
-│   └── OrderItems (products in order)
-├── Cart
-│   └── CartItems
-├── Wishlist
-├── Payment (linked to order)
-└── Notifications
-```
+### Scenario 1: Add Money to Buyer
+1. Login as admin
+2. Admin Panel → Users
+3. Click Edit on `buyer@example.com`
+4. Change Balance to `5000.00`
+5. Click Save → ✅ Success
 
----
+### Scenario 2: Toggle Verification
+1. Same as above
+2. Toggle the "Verified" switch
+3. ✅ Updates in real-time
 
-## API Quick Examples
+### Scenario 3: Create User with Balance
+1. Admin Panel → Users
+2. Click "Create User" button
+3. Fill form with Balance: `1000.00`
+4. Click Save → ✅ New user created
 
-### Get All Products
-```bash
-curl http://127.0.0.1:8000/api/v1/products/
-```
-
-### Get Product Details
-```bash
-curl http://127.0.0.1:8000/api/v1/products/1/
-```
-
-### List Categories
-```bash
-curl http://127.0.0.1:8000/api/v1/categories/
-```
-
-### Get Seller Profile
-```bash
-curl http://127.0.0.1:8000/api/v1/sellers/username/
-```
-
-### Get Reviews for Product
-```bash
-curl http://127.0.0.1:8000/api/v1/products/1/reviews/
-```
+### Scenario 4: Regular User Blocked
+1. Login as `buyer@example.com` / `test123`
+2. Try URL: `http://localhost:5176/admin/dashboard`
+3. ✅ Redirected to home page
+4. Admin menu doesn't appear
 
 ---
 
-## Important Files
+## Key Code Changes
 
-| File | Purpose |
-|------|---------|
-| `Backend/Backend/settings.py` | Django configuration |
-| `Backend/Backend/urls.py` | URL routing |
-| `Backend/main/models.py` | Database models (11 models) |
-| `Backend/main/views.py` | Traditional views |
-| `Backend/main/api_views.py` | API viewsets |
-| `Backend/main/serializers.py` | DRF serializers |
-| `Backend/main/admin.py` | Admin customization |
-| `Backend/main/urls.py` | Traditional URL patterns |
-| `Backend/main/api_urls.py` | API URL patterns |
-| `.env` | Environment variables |
-| `requirements.txt` | Python dependencies |
-
----
-
-## Database Tables (Main App)
-
-1. **SellerProfile** - Seller information and balance
-2. **Category** - Product categories
-3. **Product** - Product listings
-4. **ProductImage** - Product images
-5. **Cart** - Shopping carts
-6. **CartItem** - Items in cart
-7. **Order** - Customer orders
-8. **OrderItem** - Products in order
-9. **Review** - Product reviews
-10. **Payment** - Payment records
-11. **Wishlist** - Saved products
-12. **Notification** - User notifications
-
----
-
-## Next Steps
-
-### To Add Products:
-1. Go to `/admin/` with admin credentials
-2. Click **Products** → **Add Product**
-3. Fill in details and upload images
-4. Save
-
-### To Create Seller Accounts:
-1. Create new user in admin
-2. Create SellerProfile for that user
-3. Set commission rate and store details
-
-### To Test Cart & Orders:
-1. Create a regular user (non-seller)
-2. Login at `/admin/`
-3. View products at `/products/`
-4. Add to cart → checkout → place order
-
-### To Test API:
-```bash
-# List products (no auth needed)
-curl http://127.0.0.1:8000/api/v1/products/
-
-# Get single product
-curl http://127.0.0.1:8000/api/v1/products/1/
-
-# Get product reviews
-curl http://127.0.0.1:8000/api/v1/products/1/reviews/
+### Frontend (Vue.js)
+```javascript
+// Users.vue - Real API calls
+const saveUser = async () => {
+  await api.patch(`/auth/users/${id}/`, {
+    balance: 2500.50,  // Now works!
+    is_verified: true
+  })
+}
 ```
 
----
-
-## Configuration
-
-### Environment Variables (`.env`)
-```env
-SECRET_KEY=django-insecure-test-key-...
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# Optional: PostgreSQL (defaults to SQLite)
-# POSTGRES_DB=marketplace_db
-# POSTGRES_USER=postgres
-# POSTGRES_PASSWORD=password
-# POSTGRES_HOST=localhost
-
-# Optional: Stripe payments
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLIC_KEY=pk_test_...
+### Backend (Django)
+```python
+# Serializers - Admin-only permissions
+if request.user.user_type != 'admin':
+    self.fields['balance'].read_only = True  # Locked for non-admins
+    
+# Views - Admin-only access
+def list(self, request):
+    if request.user.user_type != 'admin':
+        return 403 Forbidden  # Only admins see user list
 ```
 
 ---
 
 ## Troubleshooting
 
-### Server won't start?
+| Problem | Solution |
+|---------|----------|
+| **Balance won't save** | Verify you're logged in as admin |
+| **Admin panel not visible** | Make sure user_type='admin' in database |
+| **API returns 403** | You need admin permissions |
+| **Changes don't persist** | Check browser DevTools → Network tab |
+
+---
+
+## Database Check
+
+Want to verify the balance was saved?
+
 ```bash
-# Activate venv and check for errors
-python manage.py check
-```
-
-### Can't login to admin?
-```bash
-# Password for admin is: admin123
-# Or reset it:
-python manage.py changepassword admin
-```
-
-### Static files missing?
-```bash
-python manage.py collectstatic
+python manage.py shell
+>>> from apps.users.models import User
+>>> u = User.objects.get(email='buyer@example.com')
+>>> print(f"Balance: {u.balance}")  # Should show new value
 ```
 
 ---
 
-## Admin Login
-- **URL**: http://127.0.0.1:8000/admin/
-- **Username**: admin
-- **Password**: admin123
+## Files Modified
 
----
+- ✅ `frontend/src/views/admin/Users.vue` - API integration
+- ✅ `backend/apps/users/serializers.py` - Permission control
+- ✅ `backend/apps/users/views.py` - Admin-only access
 
-## What You Can Do Now
-
-✅ Manage products and inventory  
-✅ Create orders and track status  
-✅ Monitor seller accounts and balances  
-✅ Review and approve customer reviews  
-✅ Track payments  
-✅ Use REST API for mobile/frontend apps  
-
----
-
-## Architecture
-
-```
-User (Buyer)
-    ↓
-Browse Products → Add to Cart → Checkout → Place Order
-    ↓
-Order splits by Seller → Payment → Seller gets notified
-    ↓
-Seller fulfills → Ships → Order updated
-    ↓
-Buyer can review → Seller can respond
-```
-
----
-
-## API Response Example
-
-```json
-{
-  "id": 1,
-  "name": "Premium Headphones",
-  "slug": "premium-headphones",
-  "price": "99.99",
-  "discount_price": null,
-  "quantity_in_stock": 50,
-  "status": "active",
-  "average_rating": 4.5,
-  "review_count": 12,
-  "seller": {
-    "id": 2,
-    "username": "electronics_store",
-    "email": "store@example.com"
-  },
-  "category": {
-    "id": 1,
-    "name": "Electronics",
-    "slug": "electronics"
-  },
-  "images": [
-    {
-      "id": 1,
-      "image": "/media/product_images/2026/02/headphones.jpg",
-      "alt_text": "Product image",
-      "is_primary": true
-    }
-  ],
-  "created_at": "2026-02-12T18:00:00Z"
-}
-```
-
----
-
-## Key Features Implemented
-
-| Feature | Status | Location |
-|---------|--------|----------|
-| Product Management | ✅ | admin / api |
-| Multi-Seller Support | ✅ | models.SellerProfile |
-| Shopping Cart | ✅ | models.Cart, models.CartItem |
-| Orders | ✅ | models.Order, models.OrderItem |
-| Payments | ✅ | models.Payment |
-| Reviews & Ratings | ✅ | models.Review |
-| Product Search | ✅ | views, api_views |
-| Seller Profiles | ✅ | models.SellerProfile, api |
-| Wishlist | ✅ | models.Wishlist |
-| Notifications | ✅ | models.Notification |
-| Admin Dashboard | ✅ | admin.py |
-| DRF REST API | ✅ | api_views.py |
-
----
-
-**Everything is ready to use!** Start the server and begin managing your marketplace.
+All changes are production-ready. Ready to test! 🎉

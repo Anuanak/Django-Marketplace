@@ -1,6 +1,0 @@
-/* Minimal styles for Django Marketplace (placeholder) */
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; color:#333; }
-.card { background:#fff; border-radius:8px; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,0.06); }
-.btn { display:inline-block; padding:8px 12px; border-radius:6px; text-decoration:none; }
-.btn-primary{ background:#3498db; color:#fff }
-.badge{ padding:6px 10px; border-radius:12px; }
